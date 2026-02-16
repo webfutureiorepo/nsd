@@ -460,6 +460,16 @@ zonec_read(
 
 	/* Parse and process all RRs.  */
 	if (zone_parse(&parser, &options, &buffers, zonefile, &state) != 0) {
+		/* With all socked up RRs,
+		 * lower the usage counter for domains in the rdata.
+		 */
+		for (int i = 0; i < state.c.rr_count; i++) {
+			/* Lower the usage counter for domains in the rdata. */
+			rr_lower_usage(database, state.c.rrs[i]);
+			region_recycle( database->region, state.c.rrs[i]
+			              , sizeof(*state.c.rrs[i])
+			              + state.c.rrs[i]->rdlength);
+		}
 		return state.errors;
 	}
 	zonec_commit_rrset(&parser, &state);

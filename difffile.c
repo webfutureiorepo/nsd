@@ -1410,9 +1410,22 @@ axfr:
 			if(!(add_RR(nsd->db, owner, type, klass, ttl, packet,
 				rrlen, zone, softfail, ixfr_store, &collect_rrs))) {
 				/* The collect_rrs->rrs that have not been committed yet, need to
-				   have rr_lower_usage(db, collect_rrs->rrs[i]); for them. This is
+				   have rr_lower_usage(db, collect_rrs.rrs[i]); for them. This is
 				   needed to remove references to the db domain tree. However
-				   the failure is fatal to the process, so it is not necessary. */
+				   the failure is fatal to the process, so it is not necessary. 
+				   But we do it anyway in case with a future change this will
+				   not be fatal to the process anymore.
+				 */
+				/* With all socked up RRs,
+				 * lower the usage counter for domains in the rdata.
+				 */
+				for (int i = 0; i < collect_rrs.rr_count; i++) {
+					/* Lower the usage counter for domains in the rdata. */
+					rr_lower_usage( nsd->db, collect_rrs.rrs[i]);
+					region_recycle( nsd->db->region, collect_rrs.rrs[i]
+						      , sizeof(*collect_rrs.rrs[i])
+						      + collect_rrs.rrs[i]->rdlength);
+				}
 				region_destroy(region);
 				return 0;
 			}
