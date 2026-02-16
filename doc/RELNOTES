@@ -27,6 +27,8 @@ BUG FIXES:
 	  on allocation failure.
 	- Fix to escape slashes when they appear in the zone name for a
 	  pattern zonefile that is created. Also for per zone statistics.
+	- Merge #472: Reduce memory usage with zones with RRsets
+	  consisting of many RRs.
 
 4.14.0
 ================
