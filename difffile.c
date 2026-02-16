@@ -1007,7 +1007,7 @@ add_RR(namedb_type* db, const dname_type* dname,
 	if (ixfr_store) {
 		ixfr_store_addrr(ixfr_store, rr);
 	}
-	/* With the first RR for a RRset in this position in the zone file,
+	/* With the first RR for a RRset in this position in the zone transfer,
 	 * find the RRset */
 	if (collect_rrs->rr_count == 0)  {
 #ifndef PACKED_STRUCTS
@@ -1409,6 +1409,10 @@ axfr:
 			/* add this rr */
 			if(!(add_RR(nsd->db, owner, type, klass, ttl, packet,
 				rrlen, zone, softfail, ixfr_store, &collect_rrs))) {
+				/* The collect_rrs->rrs that have not been committed yet, need to
+				   have rr_lower_usage(db, collect_rrs->rrs[i]); for them. This is
+				   needed to remove references to the db domain tree. However
+				   the failure is fatal to the process, so it is not necessary. */
 				region_destroy(region);
 				return 0;
 			}
