@@ -1,3 +1,6 @@
+14 April 2026: Jannik
+	- Fix XDP cleanup code being executed even if xdp is not configured
+
 25 March 2026: Wouter
 	- Fix #478: Feature request: reduce syslog noise from frequent
 	  read-only control commands (e.g. stats_noreset). It logs the

@@ -3215,7 +3215,9 @@ server_main(struct nsd *nsd)
 	}
 
 #ifdef USE_XDP
-	xdp_server_cleanup(&nsd->xdp.xdp_server);
+	if (nsd->options->xdp_interface) {
+		xdp_server_cleanup(&nsd->xdp.xdp_server);
+	}
 #endif
 
 #ifdef MEMCLEAN /* OS collects memory pages */
