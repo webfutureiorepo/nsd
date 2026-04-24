@@ -8,6 +8,7 @@ BUG FIXES:
 	  read-only control commands (e.g. stats_noreset). It logs the
 	  verbosity command always, and others at 2 and higher.
 	- Fix XDP cleanup code being executed even if xdp is not configured
+	- Merge #481 from jaredmauch: Fix pedantic/CodeQL warning in sources
 
 4.14.2
 ================

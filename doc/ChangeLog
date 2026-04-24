@@ -1,3 +1,6 @@
+24 April 2026: Jannik
+	- Merge #481 from jaredmauch: Fix pedantic/CodeQL warning in sources
+
 14 April 2026: Jannik
 	- Fix XDP cleanup code being executed even if xdp is not configured
 
